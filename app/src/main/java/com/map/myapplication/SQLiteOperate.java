@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.bean.Pic;
+
 /**
  * 创建时间： 2018/4/30
  * 编写人：Administrator
@@ -42,32 +44,24 @@ public class SQLiteOperate {
      * 增加一条记录
      *
      * @param context
-     * @param id
-     * @param title
-     * @param content
-     * @param picture
-     * @param album
-     * @param type1
-     * @param type2
-     * @param createname
-     * @param createtime
+
      */
-    private void insert(Context context, int id, String title, String content, String picture, String album, Integer type1, Integer type2, String createname, long createtime) {
+    private void insert(Context context, Pic pic) {
         PicDBHelper dbHelper = new PicDBHelper(context, "stu_db", null, 1);
         //得到一个可写的数据库
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         //生成ContentValues对象 //key:列名，value:想插入的值
         ContentValues cv = new ContentValues();
         //往ContentValues对象存放数据，键-值对模式
-        cv.put("id", id);
-        cv.put("title", title);
-        cv.put("content", content);
-        cv.put("picture", picture);
-        cv.put("album", album);
-        cv.put("type1", type1);
-        cv.put("type2", type2);
-        cv.put("createname", createname);
-        cv.put("createtime", createtime);
+        cv.put("id", pic.getId());
+        cv.put("title", pic.getTitle());
+        cv.put("content", pic.getContent());
+        cv.put("picture", pic.getPicture());
+        cv.put("album", pic.getAlbum());
+        cv.put("type1", pic.getType1());
+        cv.put("type2", pic.getType2());
+        cv.put("createname", pic.getCreatename());
+        cv.put("createtime", pic.getCreatetime());
         //调用insert方法，将数据插入数据库
         db.insert("stu_table", null, cv);
         //关闭数据库
@@ -79,9 +73,9 @@ public class SQLiteOperate {
      * 查询数据库
      *
      * @param context
-     * @param id
+     * @param pic
      */
-    private void query(Context context, int id) {
+    private void query(Context context, Pic pic) {
         PicDBHelper dbHelper = new PicDBHelper(context, "stu_db", null, 1);
         //得到一个可写的数据库
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -92,7 +86,7 @@ public class SQLiteOperate {
         //参数5：分组方式
         //参数6：having条件
         //参数7：排序方式
-        Cursor cursor = db.query("stu_table", new String[]{"id", "title", "content", "picture", "album", "type1", "type2", "createname", "createtime"}, "id=?", new String[]{id + ""}, null, null, null);
+        Cursor cursor = db.query("stu_table", new String[]{"id", "title", "content", "picture", "album", "type1", "type2", "createname", "createtime"}, "id=?", new String[]{pic.getId() + ""}, null, null, null);
         while (cursor.moveToNext()) {
             String title = cursor.getString(cursor.getColumnIndex("title"));
             String content = cursor.getString(cursor.getColumnIndex("content"));
@@ -112,26 +106,26 @@ public class SQLiteOperate {
      * 更新数据库
      *
      * @param context
-     * @param id
+     * @param pic
      */
-    private void update(Context context, int id, String title, String content, String picture, String album, Integer type1, Integer type2, String createname, long createtime) {
+    private void update(Context context, Pic pic) {
         PicDBHelper dbHelper = new PicDBHelper(context, "stu_db", null, 1);
         //得到一个可写的数据库
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         //生成ContentValues对象 //key:列名，value:想插入的值
         ContentValues cv = new ContentValues();
         //往ContentValues对象存放数据，键-值对模式
-        cv.put("id", id);
-        cv.put("title", title);
-        cv.put("content", content);
-        cv.put("picture", picture);
-        cv.put("album", album);
-        cv.put("type1", type1);
-        cv.put("type2", type2);
-        cv.put("createname", createname);
-        cv.put("createtime", createtime);
+        cv.put("id", pic.getId());
+        cv.put("title", pic.getTitle());
+        cv.put("content", pic.getContent());
+        cv.put("picture", pic.getPicture());
+        cv.put("album", pic.getAlbum());
+        cv.put("type1", pic.getType1());
+        cv.put("type2", pic.getType2());
+        cv.put("createname", pic.getCreatename());
+        cv.put("createtime", pic.getCreatetime());
         String whereClause = "id=?";
-        String[] whereArgs = {String.valueOf(id)};
+        String[] whereArgs = {String.valueOf(pic.getId())};
         //参数1 是要更新的表名
         //参数2 是一个ContentValeus对象
         //参数3 是where子句
@@ -140,12 +134,17 @@ public class SQLiteOperate {
         db.close();
     }
 
-    private void delete(Context context, int id) {
+    /**
+     * 删除某条记录
+     * @param context
+     * @param pic
+     */
+    private void delete(Context context, Pic pic) {
         PicDBHelper dbHelper = new PicDBHelper(context, "stu_db", null, 1);
         //得到一个可写的数据库
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String whereClauses = "id=?";
-        String[] whereArgs = {String.valueOf(id)};
+        String[] whereArgs = {String.valueOf(pic.getId())};
         //调用delete方法，删除数据
         db.delete("stu_table", whereClauses, whereArgs);
     }

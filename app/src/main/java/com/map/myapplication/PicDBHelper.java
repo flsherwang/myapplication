@@ -19,9 +19,20 @@ public class PicDBHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    private Integer id;
+    private String title;
+    private String content;
+    private String picture;
+    private String album;
+    private Integer type1;
+    private Integer type2;
+    private String createname;
+    private long createtime;
+
+
     // 当第一次创建数据库的时候，调用该方法
     public void onCreate(SQLiteDatabase db) {
-        String sql = "create table stu_table(id int,sname varchar(20),sage int,ssex varchar(10))";
+        String sql = "create table stu_table(id int,title varchar(20),content varchar(50),picture varchar(20),album varchar(20),type1 int,type2 int,createname varchar(20),createtime long)";
 //execSQL函数用于执行SQL语句
         db.execSQL(sql);
     }
